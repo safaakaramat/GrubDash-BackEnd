@@ -5,7 +5,7 @@ const nextId = require("../utils/nextId");
 // Middleware functions for checking dish-related conditions
 
 // Check if a dish with the specified ID exists
-const dishExists = (req, res, next) => {
+function dishExists (req, res, next) {
    const dishId = req.params.dishId;
    res.locals.dishId = dishId;
    const foundDish = dishes.find((dish) => dish.id === dishId);
@@ -19,7 +19,7 @@ const dishExists = (req, res, next) => {
 };
 
 // Validate the presence of a dish name in the request body
-const dishValidName = (req, res, next) => {
+function dishValidName (req, res, next) {
    const { data = null } = req.body;
    res.locals.newDD = data;
    const dishName = data.name;
@@ -32,7 +32,7 @@ const dishValidName = (req, res, next) => {
 };
 
 // Validate the presence and validity of a dish description
-const dishHasValidDescription = (req, res, next) => {
+function dishHasValidDescription (req, res, next) {
    const dishDescription = res.locals.newDD.description;
    if (!dishDescription || dishDescription.length === 0) {
       return next({
@@ -43,7 +43,7 @@ const dishHasValidDescription = (req, res, next) => {
 };
 
 // Validate the presence and validity of a dish price
-const dishHasValidPrice = (req, res, next) => {
+function dishHasValidPrice (req, res, next) {
    const dishPrice = res.locals.newDD.price;
    if (!dishPrice || typeof dishPrice !== "number" || dishPrice <= 0) {
       return next({
@@ -54,7 +54,7 @@ const dishHasValidPrice = (req, res, next) => {
 };
 
 // Validate the presence of a dish image URL
-const dishHasValidImage = (req, res, next) => {
+function dishHasValidImage (req, res, next) {
    const dishImage = res.locals.newDD.image_url;
    if (!dishImage || dishImage.length === 0) {
       return next({
@@ -65,7 +65,7 @@ const dishHasValidImage = (req, res, next) => {
 };
 
 // Check if the dish ID in the request body matches the ID in the route parameters
-const dishIdMatches = (req, res, next) => {
+function dishIdMatches (req, res, next) {
    const paramId = res.locals.dishId;
    const { id = null } = res.locals.newDD;
    if (paramId != id && id) {
@@ -79,7 +79,7 @@ const dishIdMatches = (req, res, next) => {
 // Clarity Middleware Functions
 
 // Middleware for validating inputs during dish creation
-const createValidation = (req, res, next) => {
+function createValidation(req, res, next){
    dishValidName(req, res, next);
    dishHasValidDescription(req, res, next);
    dishHasValidPrice(req, res, next);
@@ -88,13 +88,13 @@ const createValidation = (req, res, next) => {
 };
 
 // Middleware for validating inputs during dish reading
-const readValidation = (req, res, next) => {
+function readValidation (req, res, next) {
    dishExists(req, res, next);
    next();
 };
 
 // Middleware for validating inputs during dish update
-const updateValidation = (req, res, next) => {
+function updateValidation (req, res, next) {
    dishExists(req, res, next);
    dishValidName(req, res, next);
    dishHasValidDescription(req, res, next);
@@ -142,3 +142,4 @@ module.exports = {
    update: [updateValidation, update],
    list,
 };
+
