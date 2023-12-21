@@ -1,4 +1,4 @@
-## GrubDash-BackEnd
+# GrubDash-BackEnd
 As a backend developer for GrubDash, this project aims to build an API for handling dishes and orders. It's designed to demonstrate skills in working with Express, implementing RESTful design principles, validation, and middleware functions.
 
 # Tasks:
